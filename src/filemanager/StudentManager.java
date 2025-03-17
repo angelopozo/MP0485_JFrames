@@ -124,34 +124,25 @@ public class StudentManager {
 
     public static void removeStudent(String dni) {
         if (dni.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "LOG ERROR: No puedes dejar el DNI vacío", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "LOG ERROR: El DNI no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        boolean correctDNI = true;
+        boolean encontrado = false;
 
-        for (int i = 0; i < students.size(); i++) {
-            if (!students.get(i).getDni().equalsIgnoreCase(dni)) {
-                JOptionPane.showMessageDialog(null, "LOG ERROR: No hay ningún Alumno con ese DNI", "ERROR", JOptionPane.ERROR_MESSAGE);
-                correctDNI = false;
-                break;
+        for (int i = students.size() - 1; i >= 0; i--) {
+            if (students.get(i).getDni().equalsIgnoreCase(dni)) {
+                students.remove(i);
+                encontrado = true;
             }
         }
 
-        if (!isEmpty() && correctDNI) {
-            showRegister();
-            for (int i = 0; i < students.size(); i++) {
-                if (students.get(i).getDni().equalsIgnoreCase(dni)) {
-                    students.remove(students.get(i));
-                }
-            }
-            overWriteRegister();
-            System.out.println("LOG: El Alumno ha sido eliminado correctamente.");
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(null, "LOG ERROR: El DNI iniciado no se encuentra.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        if (isEmpty()) {
-            JOptionPane.showMessageDialog(null, "LOG ERROR: No hay ningún alumno en el registro.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
+        overWriteRegister();
     }
 
     public static String showRegister() {
@@ -178,7 +169,7 @@ public class StudentManager {
             JOptionPane.showMessageDialog(null, "LOG ERROR: No puedes dejar el DNI vacío", "ERROR", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        
+
         boolean correctDNI = true;
 
         for (int i = 0; i < students.size(); i++) {
